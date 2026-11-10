@@ -146,25 +146,28 @@ export default function ManagementCenter({ building }: { building: Building }) {
   return (
     <MgmtContext.Provider value={ctx}>
       <div className="flex h-dvh flex-col bg-[#020814] text-slate-200">
-        <header className="flex h-14 shrink-0 items-center gap-3 border-b border-cyan-500/20 bg-[#030c1d]/90 px-4">
-          <Link href="/" className="font-mono text-sm font-bold tracking-[0.3em] text-cyan-300 hover:text-cyan-200">
-            BLUEPRINTFLOW
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-cyan-500/20 bg-[#030c1d]/90 px-3 sm:gap-3 sm:px-4">
+          {/* 手機：只留品牌縮寫與頁面名稱，社區名稱與麵包屑在寬螢幕才顯示 */}
+          <Link href="/" className="shrink-0 font-mono text-sm font-bold tracking-[0.15em] text-cyan-300 hover:text-cyan-200 sm:tracking-[0.3em]">
+            <span className="sm:hidden">BPF</span>
+            <span className="hidden sm:inline">BLUEPRINTFLOW</span>
           </Link>
-          <span className="text-cyan-500/40">/</span>
-          <Link href={`/buildings/${building.id}`} className="text-sm text-cyan-50 hover:text-cyan-200">
+          <span className="hidden text-cyan-500/40 sm:inline">/</span>
+          <Link href={`/buildings/${building.id}`} className="hidden whitespace-nowrap text-sm text-cyan-50 hover:text-cyan-200 sm:inline">
             {building.name}
           </Link>
           <span className="text-cyan-500/40">/</span>
-          <h1 className="text-sm font-semibold text-cyan-50">管理中心</h1>
+          <h1 className="whitespace-nowrap text-sm font-semibold text-cyan-50">管理中心</h1>
           <div className="flex-1" />
           {/* 示範模式不開放行事曆訂閱 */}
           {!me?.demo && (
-            <button onClick={() => setCalOpen(true)} className="whitespace-nowrap rounded-md border border-cyan-500/40 px-3 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/10">
-              📅 訂閱行事曆
+            <button onClick={() => setCalOpen(true)} aria-label="訂閱行事曆" className="whitespace-nowrap rounded-md border border-cyan-500/40 px-2.5 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/10 sm:px-3">
+              📅<span className="hidden sm:inline"> 訂閱行事曆</span>
             </button>
           )}
-          <Link href={`/buildings/${building.id}`} className="whitespace-nowrap rounded-md border border-cyan-400/60 bg-cyan-400/10 px-3 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/20">
-            ← 回 3D / 平面圖
+          <Link href={`/buildings/${building.id}`} className="whitespace-nowrap rounded-md border border-cyan-400/60 bg-cyan-400/10 px-2.5 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/20 sm:px-3">
+            ← <span className="sm:hidden">3D</span>
+            <span className="hidden sm:inline">回 3D / 平面圖</span>
           </Link>
           <UserMenu />
         </header>
