@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: #020814;
+  color: #e2e8f0;
+  font-family: var(--font-sans);
+  color-scheme: dark;
+}
+
+/* 流程圖：連線流動、下一步方塊呼吸光 */
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+@keyframes node-pulse {
+  0%,
+  100% {
+    stroke-opacity: 1;
+    filter: drop-shadow(0 0 2px rgba(76, 201, 255, 0.5));
+  }
+  50% {
+    stroke-opacity: 0.55;
+    filter: drop-shadow(0 0 10px rgba(76, 201, 255, 0.95));
+  }
+}
+.flow-edge-live {
+  stroke-dasharray: 8 4;
+  animation: flow-dash 0.8s linear infinite;
+}
+.flow-node-next > .flow-shape {
+  animation: node-pulse 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-edge-live,
+  .flow-node-next > .flow-shape {
+    animation: none;
+  }
+}
+
+/* 組織圖展開：新長出的方塊淡入 */
+@keyframes node-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.flow-node-enter {
+  animation: node-enter 0.35s ease-out both;
+  transform-box: fill-box;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-node-enter {
+    animation: none;
+  }
+}
+
+/* 公告列印：只印 A4 公告本體 */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  body * {
+    visibility: hidden !important;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible !important;
+  }
+  .print-area {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 210mm !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
