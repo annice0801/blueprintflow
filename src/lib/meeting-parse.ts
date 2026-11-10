@@ -323,7 +323,7 @@ function parseAttendance(paras: string[]): Attendance[] {
     if (!token) return;
     let title = token.match(TITLE)?.[1] ?? "";
     let name = title ? token.slice(title.length) : token;
-    // 「皇家國際物業處長黃士彰」：職稱在前，取最後 2–3 字為姓名
+    // 「藍圖物業處長王小明」：職稱在前，取最後 2–3 字為姓名
     const tail = name.match(/^(.+?(?:處長|經理|主任|代表|技師|律師|里長|委員))([一-鿿]{2,3})$/);
     if (tail) {
       title = title || tail[1];

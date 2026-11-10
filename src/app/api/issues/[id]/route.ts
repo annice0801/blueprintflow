@@ -1,11 +1,15 @@
+import { requestUser } from "@/lib/auth";
+import { isDemoScope } from "@/lib/buildings";
 import { parseIssueFields } from "@/lib/issue-form";
 import { errorResponse, photosFrom } from "@/lib/validate";
 import { deletePhoto, mutateIssues, readIssues, savePhoto } from "@/lib/store";
 
-export async function GET(_req: Request, ctx: RouteContext<"/api/issues/[id]">) {
+export async function GET(request: Request, ctx: RouteContext<"/api/issues/[id]">) {
   const { id } = await ctx.params;
   const issue = (await readIssues()).find((i) => i.id === id);
-  if (!issue) return Response.json({ error: "找不到問題" }, { status: 404 });
+  // 示範模式只能讀示範範圍的資料
+  const { buildingId } = requestUser(request);
+  if (!issue || (isDemoScope(buildingId) && issue.buildingId !== buildingId)) return Response.json({ error: "找不到問題" }, { status: 404 });
   return Response.json(issue);
 }
 

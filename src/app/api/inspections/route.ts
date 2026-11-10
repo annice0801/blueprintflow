@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { parsePlan, plansOf } from "@/lib/inspection-forms";
 import type { InspectionPlan } from "@/lib/inspections";
@@ -6,7 +7,7 @@ import { mutateCollection } from "@/lib/store";
 import { defined, errorResponse, jsonBody } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   return Response.json(await plansOf(buildingId));
 }
 

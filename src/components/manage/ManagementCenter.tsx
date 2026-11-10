@@ -157,9 +157,12 @@ export default function ManagementCenter({ building }: { building: Building }) {
           <span className="text-cyan-500/40">/</span>
           <h1 className="text-sm font-semibold text-cyan-50">管理中心</h1>
           <div className="flex-1" />
-          <button onClick={() => setCalOpen(true)} className="whitespace-nowrap rounded-md border border-cyan-500/40 px-3 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/10">
-            📅 訂閱行事曆
-          </button>
+          {/* 示範模式不開放行事曆訂閱 */}
+          {!me?.demo && (
+            <button onClick={() => setCalOpen(true)} className="whitespace-nowrap rounded-md border border-cyan-500/40 px-3 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/10">
+              📅 訂閱行事曆
+            </button>
+          )}
           <Link href={`/buildings/${building.id}`} className="whitespace-nowrap rounded-md border border-cyan-400/60 bg-cyan-400/10 px-3 py-1.5 text-sm text-cyan-200 hover:bg-cyan-400/20">
             ← 回 3D / 平面圖
           </Link>

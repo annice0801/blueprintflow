@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { parseAttendance, parseMeetingMeta, parsePlanRef, parseRoles, requireBuildingId } from "@/lib/mgmt-forms";
 import { roleOf, ROLE_IDS, termAt, TODO_STATUS, type Meeting, type RoleId, type Term, type Todo } from "@/lib/mgmt";
@@ -5,7 +6,7 @@ import { mutateCollection, readCollection } from "@/lib/store";
 import { dateStr, errorResponse, jsonBody, maxLen, str, ValidationError } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId");
+  const buildingId = dataScope(request);
   const list = (await readCollection<Meeting>("meetings")).filter((m) => !buildingId || m.buildingId === buildingId);
   // 清單不回傳全文，節省流量
   return Response.json(list.map(({ text, ...m }) => ({ ...m, textLength: text.length })).sort((a, b) => b.date.localeCompare(a.date)));

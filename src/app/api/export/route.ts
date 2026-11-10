@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import path from "path";
 import type { NextRequest } from "next/server";
 import ExcelJS from "exceljs";
@@ -47,7 +48,7 @@ const count = <K extends string>(issues: Issue[], key: (i: Issue) => K, keys: re
   keys.map((k) => [k, issues.filter((i) => key(i) === k).length] as [K, number]);
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId") ?? "";
+  const buildingId = dataScope(request);
   const building = getBuilding(buildingId);
   if (!building) return Response.json({ error: "找不到建築物" }, { status: 404 });
 

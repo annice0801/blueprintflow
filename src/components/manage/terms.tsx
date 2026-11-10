@@ -160,7 +160,7 @@ export function TermDialog({ term, kind, onClose, onSaved }: { term?: Term; kind
     >
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Field label="名稱 *" className="col-span-2">
-          <input className={INPUT} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} placeholder={kind === "committee" ? "例：第一屆" : "例：皇家國際（115–116）"} maxLength={60} autoFocus={!term} />
+          <input className={INPUT} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} placeholder={kind === "committee" ? "例：第一屆" : "例：藍圖物業（115–116）"} maxLength={60} autoFocus={!term} />
         </Field>
         <Field label="起日">
           <input type="date" className={INPUT} value={f.start} onChange={(e) => setF({ ...f, start: e.target.value })} />

@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { parsePlant } from "@/lib/record-forms";
 import type { Plant } from "@/lib/records";
@@ -7,7 +8,7 @@ import { errorResponse, photosFrom } from "@/lib/validate";
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
   const plants = (await readCollection<Plant>("plants")).filter(
-    (p) => (!q.get("buildingId") || p.buildingId === q.get("buildingId")) && (!q.get("areaId") || p.areaId === q.get("areaId")),
+    (p) => p.buildingId === dataScope(request) && (!q.get("areaId") || p.areaId === q.get("areaId")),
   );
   return Response.json(plants);
 }

@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { parseTerm, requireBuildingId } from "@/lib/mgmt-forms";
 import type { Term } from "@/lib/mgmt";
@@ -5,7 +6,7 @@ import { mutateCollection, readCollection } from "@/lib/store";
 import { errorResponse, jsonBody } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId");
+  const buildingId = dataScope(request);
   return Response.json((await readCollection<Term>("terms")).filter((t) => !buildingId || t.buildingId === buildingId));
 }
 

@@ -41,8 +41,9 @@ export default function LoginPanel({ clientId, communities }: { clientId: string
         setError(data.error ?? "登入失敗");
         return setState("idle");
       }
-      if (data.status === "active") window.location.href = safeNext(params.get("next"));
-      else setState(data.status === "disabled" ? "disabled" : "pending");
+      // 已核准 → 原本要去的頁面；尚未核准 → 先進入示範模式瀏覽
+      if (data.status === "disabled") setState("disabled");
+      else window.location.href = safeNext(params.get("next"));
     },
     [params],
   );
@@ -71,7 +72,7 @@ export default function LoginPanel({ clientId, communities }: { clientId: string
           <p className="mt-2 text-sm text-slate-400">請使用 Google 帳號登入</p>
           <div className="mt-6 flex min-h-11 justify-center">{state === "busy" ? <p className="text-sm text-cyan-300">登入中…</p> : <div ref={btn} />}</div>
           {!clientId && <p className="mt-4 text-xs text-rose-300">尚未設定 GOOGLE_CLIENT_ID</p>}
-          <p className="mt-6 text-[11px] text-slate-500">第一次登入需管理員核准；住戶、委員、物業人員核准後依身分開放功能。</p>
+          <p className="mt-6 text-[11px] text-slate-500">登入後可先瀏覽示範內容（假名資料）；住戶、委員、物業人員經管理員核准後，依身分開放完整功能。</p>
         </>
       )}
       {error && <p className="mt-4 rounded-md bg-rose-500/15 px-3 py-2 text-sm text-rose-200">{error}</p>}

@@ -1,12 +1,17 @@
+import { requestUser } from "@/lib/auth";
+import { isDemoScope } from "@/lib/buildings";
 import { parseAttendance, parseMeetingMeta, parsePlanRef } from "@/lib/mgmt-forms";
 import type { Meeting, Todo } from "@/lib/mgmt";
 import { deleteDocument, mutateCollection, readCollection } from "@/lib/store";
 import { errorResponse, jsonBody, maxLen, notFound, str } from "@/lib/validate";
 
-export async function GET(_req: Request, ctx: RouteContext<"/api/meetings/[id]">) {
+export async function GET(request: Request, ctx: RouteContext<"/api/meetings/[id]">) {
   const { id } = await ctx.params;
   const m = (await readCollection<Meeting>("meetings")).find((x) => x.id === id);
-  return m ? Response.json(m) : notFound("會議");
+  // 示範模式只能讀示範範圍的資料
+  const { buildingId } = requestUser(request);
+  if (!m || (isDemoScope(buildingId) && m.buildingId !== buildingId)) return notFound("會議");
+  return Response.json(m);
 }
 
 export async function PATCH(request: Request, ctx: RouteContext<"/api/meetings/[id]">) {

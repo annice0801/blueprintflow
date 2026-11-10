@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import ExcelJS from "exceljs";
 import type { NextRequest } from "next/server";
 import { unitLabel } from "@/lib/buildings";
@@ -19,7 +20,7 @@ function sheet(wb: ExcelJS.Workbook, name: string, cols: [string, number][], row
 /** 月報 / 年報 Excel：?period=2026-10 或 2026 */
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
-  const buildingId = q.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   const period = /^\d{4}(-\d{2})?$/.test(q.get("period") ?? "") ? q.get("period")! : new Date().toISOString().slice(0, 7);
   const mine = <T extends { buildingId: string }>(l: T[]) => l.filter((x) => x.buildingId === buildingId);
   const r = buildReport(

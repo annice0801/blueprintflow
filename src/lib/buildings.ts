@@ -343,8 +343,19 @@ export const BUILDINGS: Building[] = [
   },
 ];
 
+/*
+ * 示範模式：已登入、尚未被核准的帳號看同一棟建築的結構，資料則讀「<社區>:demo」這份假名示範資料。
+ * proxy 會把這類請求的社區代號改寫成示範範圍，真實資料不會送到示範帳號。
+ */
+const DEMO_SUFFIX = ":demo";
+export const demoScope = (id: string) => (id.endsWith(DEMO_SUFFIX) ? id : id + DEMO_SUFFIX);
+export const isDemoScope = (id: string | null | undefined) => !!id?.endsWith(DEMO_SUFFIX);
+/** 資料範圍 → 實際社區代號（示範範圍對應同一棟建築） */
+export const realBuildingId = (id: string) => (isDemoScope(id) ? id.slice(0, -DEMO_SUFFIX.length) : id);
+
 export function getBuilding(id: string) {
-  return BUILDINGS.find((b) => b.id === id);
+  const real = realBuildingId(id);
+  return BUILDINGS.find((b) => b.id === real);
 }
 
 export function getArea(b: Building, areaId: string) {

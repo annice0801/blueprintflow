@@ -66,7 +66,7 @@ export type Term = {
   id: string;
   buildingId: string;
   kind: TermKind;
-  name: string; // 第一屆、皇家國際（115–116）
+  name: string; // 第一屆、藍圖物業（115–116）
   companyId?: string; // 物業公司（廠商資料）
   start: string;
   end: string;

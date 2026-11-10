@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { parseGateLog } from "@/lib/record-forms";
 import type { Todo } from "@/lib/mgmt";
@@ -6,7 +7,7 @@ import { mutateCollection, readCollection } from "@/lib/store";
 import { errorResponse, jsonBody } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId");
+  const buildingId = dataScope(request);
   const logs = (await readCollection<GateLog>("gate-logs")).filter((l) => !buildingId || l.buildingId === buildingId);
   return Response.json(logs.sort((a, b) => b.at.localeCompare(a.at)));
 }

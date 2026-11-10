@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { getSettings, localNow } from "@/lib/field-server";
 import type { Visitor } from "@/lib/field";
@@ -7,7 +8,7 @@ import { errorResponse, jsonBody, str, ValidationError } from "@/lib/validate";
 
 /** 讀取時一併刪除超過保存期限的訪客紀錄（個資最小化） */
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   const { visitorRetentionDays } = await getSettings(buildingId);
   const cutoff = new Date(Date.now() - visitorRetentionDays * 86400000).toISOString();
   const list = await mutateCollection<Visitor, Visitor[]>("visitors", (all) => {

@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { extractText } from "@/lib/meeting-parse";
 import { parseRegulation, requireBuildingId } from "@/lib/mgmt-forms";
@@ -6,7 +7,7 @@ import { mutateCollection, readCollection, saveDocument } from "@/lib/store";
 import { errorResponse } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId");
+  const buildingId = dataScope(request);
   return Response.json((await readCollection<Regulation>("regulations")).filter((r) => !buildingId || r.buildingId === buildingId));
 }
 

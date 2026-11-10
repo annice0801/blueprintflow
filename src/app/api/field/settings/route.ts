@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { getSettings, saveSettings } from "@/lib/field-server";
 import { RES_TYPES, type FieldSettings, type ResTypeSetting } from "@/lib/field";
@@ -5,7 +6,7 @@ import { requireBuildingId } from "@/lib/mgmt-forms";
 import { errorResponse, jsonBody, ValidationError } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  return Response.json(await getSettings(request.nextUrl.searchParams.get("buildingId") ?? "blueprint"));
+  return Response.json(await getSettings(dataScope(request)));
 }
 
 const HM = /^\d{2}:\d{2}$/;

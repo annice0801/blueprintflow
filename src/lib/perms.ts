@@ -51,6 +51,23 @@ export const DEFAULT_PERMS: Record<SysRole, Perms> = {
   resident: { ...all("none"), portal: "edit", booking: "edit" },
 };
 
+/** 示範模式（已登入、尚未核准）：只能檢視結構與流程類功能，看到的是假名示範資料；名冊、管理費、現場、報表、後台不開放 */
+export const DEMO_PERMS: Perms = {
+  ...all("none"),
+  portal: "view",
+  plans: "view",
+  gardens: "view",
+  driveway: "view",
+  shops: "view",
+  announcements: "view",
+  meetings: "view",
+  todos: "view",
+  inspections: "view",
+  org: "view",
+  vendors: "view",
+  regulations: "view",
+};
+
 export const USER_STATUS = ["active", "pending", "disabled"] as const;
 export type UserStatus = (typeof USER_STATUS)[number];
 export const STATUS_LABEL: Record<UserStatus, string> = { active: "啟用", pending: "待核准", disabled: "停用" };
@@ -84,7 +101,7 @@ export type MemberRow = Omit<User, "memberships"> & { membership: Membership };
 export type RolePerms = { id: string; buildingId: string; role: SysRole; perms: Perms; updatedAt: string }; // id = 社區:身分
 
 export type MyCommunity = { id: string; name: string; role: SysRole | "super"; status: UserStatus };
-export type Me = { user: User; buildingId: string; perms: Perms; communities: MyCommunity[]; adminOf: string[] };
+export type Me = { user: User; buildingId: string; perms: Perms; communities: MyCommunity[]; adminOf: string[]; demo: boolean };
 
 /** 帳號整體狀態：系統擁有者或任一社區啟用 → 啟用 */
 export function overallStatus(u: User): UserStatus {

@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { unitLabel } from "@/lib/buildings";
 import type { Announcement, Reservation } from "@/lib/field";
@@ -12,7 +13,7 @@ import { readCollection } from "@/lib/store";
  * 待辦期限、會議、預約、合約到期、公告期間、年度檢測期限。上線後外部才連得到。
  */
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   const events: CalEvent[] = [];
   for (const t of await readCollection<Todo>("todos"))
     if (t.buildingId === buildingId && t.due && t.status !== "已完成" && t.status !== "暫緩")

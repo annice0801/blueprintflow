@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { createEvent } from "@/lib/event-server";
 import { requireBuildingId } from "@/lib/mgmt-forms";
@@ -6,7 +7,7 @@ import { readCollection } from "@/lib/store";
 import { dateStr, errorResponse, jsonBody, maxLen, str, ValidationError } from "@/lib/validate";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId");
+  const buildingId = dataScope(request);
   return Response.json((await readCollection<CommunityEvent>("events")).filter((e) => !buildingId || e.buildingId === buildingId));
 }
 

@@ -154,6 +154,13 @@ export const USER_HEADER = "x-bf-user";
 export const PERMS_HEADER = "x-bf-perms";
 export const BUILDING_HEADER = "x-bf-building"; // 前端帶目前社區；proxy 驗證後改寫為實際判定的社區
 
+/**
+ * 這次請求的資料範圍：以 proxy 驗證後寫入的社區為準（示範模式為示範範圍），不直接信任網址參數；
+ * 行事曆訂閱這類不經登入的請求沒有標頭，才用網址參數；都沒有時用預設社區，不會回傳全部資料
+ */
+export function dataScope(request: Request) {
+  return request.headers.get(BUILDING_HEADER) || new URL(request.url).searchParams.get("buildingId") || BUILDINGS[0].id;
+}
 export function requestUser(request: Request) {
   const email = request.headers.get(USER_HEADER);
   const buildingId = request.headers.get(BUILDING_HEADER) ?? "";

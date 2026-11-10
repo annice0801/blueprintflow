@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { unitPing } from "@/lib/buildings";
 import { estimatePoints, getSettings, validateReservation } from "@/lib/field-server";
@@ -12,7 +13,7 @@ import { errorResponse, jsonBody } from "@/lib/validate";
  */
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
-  const buildingId = q.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   const all = (await readCollection<Reservation>("reservations")).filter((r) => r.buildingId === buildingId);
   const unitId = q.get("unitId");
   if (unitId) {

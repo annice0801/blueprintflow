@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import { AlignmentType, Document, Packer, Paragraph, TextRun } from "docx";
 import type { NextRequest } from "next/server";
 import { roleOf, termAt, type Meeting, type Regulation, type Term, type Todo } from "@/lib/mgmt";
@@ -16,7 +17,7 @@ const roc = (d: string) => (d ? `${Number(d.slice(0, 4)) - 1911} 年 ${d.slice(5
 
 /** 依前次會議與待辦進度，產生下次管委會議程（Word） */
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   const date = request.nextUrl.searchParams.get("date") ?? "";
   const today = new Date().toISOString().slice(0, 10);
   const terms = (await readCollection<Term>("terms")).filter((t) => t.buildingId === buildingId);

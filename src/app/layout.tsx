@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import DemoBanner from "@/components/auth/DemoBanner";
 import FeedbackButton from "@/components/auth/FeedbackButton";
 import Tracker from "@/components/auth/Tracker";
 import "./globals.css";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Tracker />
           </Suspense>
           <FeedbackButton />
+          <DemoBanner />
         </AuthProvider>
       </body>
     </html>

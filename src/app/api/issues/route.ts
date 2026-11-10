@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { parseIssueFields } from "@/lib/issue-form";
 import { errorResponse, photosFrom } from "@/lib/validate";
@@ -8,7 +9,7 @@ export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
   const issues = (await readIssues()).filter(
     (i) =>
-      (!q.get("buildingId") || i.buildingId === q.get("buildingId")) &&
+      i.buildingId === dataScope(request) &&
       (!q.get("tower") || i.tower === q.get("tower")) &&
       (!q.get("floor") || i.floor === q.get("floor")),
   );

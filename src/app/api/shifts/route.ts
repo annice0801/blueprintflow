@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { getSettings } from "@/lib/field-server";
 import { SHIFT_ROLES, type Shift } from "@/lib/field";
@@ -8,7 +9,7 @@ import { errorResponse, jsonBody, str, ValidationError } from "@/lib/validate";
 /** ?from=YYYY-MM-DD&to=YYYY-MM-DD */
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
-  const buildingId = q.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   const from = q.get("from") ?? "0000";
   const to = q.get("to") ?? "9999";
   return Response.json((await readCollection<Shift>("shifts")).filter((s) => s.buildingId === buildingId && s.date >= from && s.date <= to));

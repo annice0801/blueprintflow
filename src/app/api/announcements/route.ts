@@ -1,3 +1,4 @@
+import { dataScope } from "@/lib/auth";
 import type { NextRequest } from "next/server";
 import { ANN_TEMPLATES, type Announcement } from "@/lib/field";
 import { requireBuildingId } from "@/lib/mgmt-forms";
@@ -6,7 +7,7 @@ import { errorResponse, jsonBody } from "@/lib/validate";
 import { annFields } from "./fields";
 
 export async function GET(request: NextRequest) {
-  const buildingId = request.nextUrl.searchParams.get("buildingId") ?? "blueprint";
+  const buildingId = dataScope(request);
   return Response.json((await readCollection<Announcement>("announcements")).filter((a) => a.buildingId === buildingId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
 }
 
